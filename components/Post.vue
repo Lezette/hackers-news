@@ -22,7 +22,7 @@
 <script>
 export default {
     name: 'Post',
-  props: ['title', 'id', 'url', 'author', 'comments_count', 'points']
+    props: ['title', 'id', 'url', 'author', 'comments_count', 'points']
 }
 </script>
 

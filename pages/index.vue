@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-0 mx-auto min-h-screen">
+  <div class="container my-0 mx-auto min-h-screen text-white">
     <div>
       <h1 class="text-3xl md:6xl text-center py-5">
         YC Haacker News Replica

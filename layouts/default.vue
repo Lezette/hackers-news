@@ -30,4 +30,8 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
+html, body {
+  background: #000;
+  min-height: 100vh;
+}
 </style>
