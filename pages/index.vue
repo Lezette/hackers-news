@@ -34,7 +34,6 @@ export default {
   async created() {
     try {
       const res = await this.$axios.get('/news');
-      console.log('res.data', res.data);
       this.posts = res.data;
     } catch (err) {
       console.log('err', err);
@@ -47,7 +46,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'A Replica of YC Haacker News'
+          content: 'Unofficial Hacker News'
         }
       ]
     }
