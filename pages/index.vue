@@ -1,10 +1,14 @@
 <template>
-  <div class="container my-0 mx-auto min-h-screen text-white">
+  <div class="w-11/12 lg:w-10/12 my-0 mx-auto min-h-screen text-white mb-5">
     <div>
       <h1 class="text-3xl md:6xl text-center py-5">
         YC Haacker News Replica
       </h1>
-      <div>
+      <div v-if="err !== ''" class="bg-red-300 py-2 px-5 flex justify-between items-center w-10/12 mx-auto">
+        <p class="font-bold">{{err}}</p>
+        <p class="text-2xl cursor-pointer" @click="clearError">&times;</p>
+      </div>
+      <div class="md:grid md:grid-cols-2 gap-5" v-if="posts.length">
         <Post
           v-for="post in posts"
           :key="post.id"
@@ -14,29 +18,52 @@
           :author="post.user"
           :comments_count="post.comments_count"
           :points="post.points"
+          :time_ago="post.time_ago"
         />
       </div>
+      <div v-else class="flex justify-center items-center h-56">
+        <Loading />
+        <Loading />
+      </div>
+    </div>
+    <div class="flex justify-between w-6/12 md:w-2/12 mx-auto">
+        <button class="border border-grey-500 px-5 py-3" :disabled="page === 1" @click="fetch(page = page - 1)">prev</button>
+        <button class="border border-grey-500 px-5 py-3" :disabled="page === 10" @click="fetch(page = page + 1)">next</button>
     </div>
   </div>
 </template>
 
 <script>
 import Post from '../components/Post';
+import Loading from '../components/Loading';
 export default {
   components: {
-    Post
+    Post,
+    Loading
   },
   data() {
     return {
-      posts: []
+      posts: [],
+      page: 1,
+      err: '',
     }
   },
   async created() {
-    try {
-      const res = await this.$axios.get('/news');
-      this.posts = res.data;
-    } catch (err) {
-      console.log('err', err);
+    this.fetch();
+  },
+  methods: {
+    async fetch (page = 1) {
+      page = page < 1 ? 1 : page > 10 ? 10 : page;
+      try {
+          const res = await this.$axios.get(`/news?page=${page}`);
+          this.posts = res.data;
+          this.err = '';
+      } catch (err) {
+          this.err = `An Error occurred: ${err}`
+      }
+    },
+    clearError() {
+      this.err = '';
     }
   },
   head() {

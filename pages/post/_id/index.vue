@@ -6,53 +6,61 @@
        <p class="text-xl mt-3">Back to posts</p>
        </nuxt-link>
      </div>
-     <div class="p-8 sm:w-11/12 mx-auto bg-gray-800">
-         <a
-          :href="post.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-lg md:text-2xl font-bold"
-        >
-          {{post.title}}
-        </a>
-        <div class="md:flex justify-between items-center w-full md:w-6/12 my-3">
-          <div>Written By: {{post.user}}</div>
-          <div>Written {{post.time_ago}} </div>
-          <div>Post type: {{post.type}} </div>
-          <div>Total Points: {{post.points}} </div>
-          <div>Total Comments: {{post.comments_count}} </div>
+      <div v-if="err !== ''" class="bg-red-300 py-2 px-5 flex justify-between items-center w-10/12 mx-auto">
+      <p class="font-bold">{{err}}</p>
+      <p class="text-2xl cursor-pointer" @click="clearError">&times;</p>
+    </div>
+     <div  v-if="post">
+       <div class="p-8 sm:w-11/12 mx-auto bg-gray-800">
+          <a
+            :href="post.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-lg md:text-2xl font-bold"
+            >
+            {{post.title}}
+            </a>
+            <div class="md:flex justify-between items-center w-full md:w-6/12 my-3">
+              <div>Written By: {{post.user}}</div>
+              <div>Written {{post.time_ago}} </div>
+              <div>Post type: {{post.type}} </div>
+              <div>Total Points: {{post.points}} </div>
+              <div>Total Comments: {{post.comments_count}} </div>
+            </div>
+        </div>
+        <div class="w-11/12 mx-auto my-4">
+          <div class="text-4xl ">Comments</div>
+          <Comment
+            v-for="comment in comments"
+            :key="comment.id"
+            :id="comment.id"
+            :content="comment.content"
+            :level="comment.level"
+            :time_ago="comment.time_ago"
+            :user="comment.user"
+            :comments="comment.comments"
+          />
         </div>
      </div>
-      <div class="w-11/12 mx-auto my-4">
-        <div class="text-4xl ">Comments</div>
-        <Comment
-          v-for="comment in comments"
-          :key="comment.id"
-          :id="comment.id"
-          :content="comment.content"
-          :level="comment.level"
-          :time_ago="comment.time_ago"
-          :user="comment.user"
-          :comments="comment.comments"
-        />
-        <!-- <div
-          :v-for="comment in comments"
-        >{{comment.content}}</div> -->
-        
-      </div>
+     <div v-else class="flex justify-center items-center mt-10">
+        <Loading />
+     </div>
   </div>
 </template>
 
 <script>
-import Comment from '../../../components/Comment'
+import Comment from '../../../components/Comment';
+import Loading from '../../../components/Loading';
 export default {
   components: {
-    Comment
+    Comment,
+    Loading
   },
   data() {
     return {
-      post: {},
-      comments: []
+      post: null,
+      comments: [],
+      err: ''
     }
   },
   async created() {
@@ -62,12 +70,17 @@ export default {
       this.post = res.data;
       this.comments = res.data.comments;
     } catch (err) {
-      console.log('err', err);
+      this.err = `An Error occurred: ${err}`
+    }
+  },
+  methods: {
+    clearError() {
+      this.err = '';
     }
   },
   head() {
     return {
-      title: `Hackers News | ${this.post.title || 'Post'}`,
+      title: `Hackers News | Post`,
       meta: [
         {
           hid: 'description',
