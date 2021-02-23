@@ -12,7 +12,7 @@
             {{title}}
           </a>
           
-          <div class="flex mt-5 text-xs">
+          <div class="sm:flex mt-5 text-xs">
             <div class="bg-gray-700 p-2 mx-1">total comments: {{comments_count}}</div>
             <div class="bg-gray-700 p-2 mx-1">points: {{points}}</div>
             <div class="bg-gray-700 p-2 mx-1">Posted {{time_ago}}</div>
