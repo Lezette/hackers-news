@@ -45,7 +45,7 @@ export default {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: process.env.API_URL,
+    baseURL: 'http://node-hnapi.herokuapp.com',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
