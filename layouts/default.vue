@@ -4,6 +4,22 @@
   </div>
 </template>
 
+<script>
+export default {
+  head() {
+    return {
+      meta: [
+        {
+          hid: 'Content-Security-Policy',
+          'http-equiv': 'Content-Security-Policy',
+          content: 'upgrade-insecure-requests'
+        }
+      ]
+    }
+  },
+}
+</script>
+
 <style>
 html {
   font-family:

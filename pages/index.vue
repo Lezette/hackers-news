@@ -74,7 +74,7 @@ export default {
           hid: 'description',
           name: 'description',
           content: 'Unofficial Hacker News'
-        }
+        },
       ]
     }
   },
